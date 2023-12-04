@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Rock Paper Scissor</title>
+</head>
+<body>
+    
+    <div class="w-[70%] bg-slate-950 rounded-md h-[60vh] mt-10 mx-auto border-2">
+        
+        <h1 class="font-extrabold text-2xl text-center mt-3 text-[#F1EAFF]">Rock Paper Scissor</h1>
+         
+        <h3 id="player_chose" class="text-slate-100 ml-14 my-8 text-xl">Player is chose : </h3>
+        <h3 id="computer_chose" class="text-slate-100 ml-14 my-8 text-xl">Computer is chose :</h3>
+        <h3 id="result" class="text-slate-100 ml-14 my-8 text-xl">Result is:</h3>
+
+        <div class="w-[98%] mx-auto h-0.5 bg-slate-300 my-4"></div>
+
+        <div class="flex gap-x-3 justify-center">
+            <button 
+             onclick="clickHandler('Rock',1)"
+             class="text-xl px-6 py-3 bg-[#FED9ED] rounded-md">
+             Rock
+            </button>
+
+            <button 
+             onclick="clickHandler('Paper',2)"
+              class="text-xl px-6 py-3 bg-[#F3B664] rounded-md">
+              Paper
+           </button>
+            <button 
+            onclick="clickHandler('Sissor',3)"
+            class="text-xl px-6 py-3 bg-[#EE7214] rounded-md">
+            Scissor
+        </button>
+        </div>
+    </div>
+
+  
+
+</body>
+<script>
+
+    let playerChose;
+    let computerChose;
+    let roundResult;
+
+    function clickHandler(playerChoice, choiceNumber) {
+        console.log("Button clicked:", playerChoice);
+
+        // Set playerChose variable
+        playerChose = playerChoice;
+
+        fetch(`http://localhost:4000/play/${choiceNumber}`)
+            .then(response => response.json())
+            .then(data => {
+                // Update variables with fetched data
+                console.log(data);
+                roundResult = data?.round_result;
+                computerChose = data.computer_choice;
+
+                // Update DOM elements after fetching data
+                document.getElementById("player_chose").innerText = `Player chose: ${playerChose}`;
+                document.getElementById("computer_chose").innerText = `Computer chose: ${computerChose}`;
+                document.getElementById("result").innerText = `Result: ${roundResult} 🎉🎉🎉`;
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+            });
+    }
+
+</script>
+</html>
